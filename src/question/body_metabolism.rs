@@ -1,5 +1,3 @@
-use requestty::ListItem;
-
 use crate::data_calculation::body_metabolism::{
     calculate_bmr, calculate_daily_energy_expenditure, BodyInformation, SportInformation,
 };
@@ -8,7 +6,7 @@ use super::utils::{
     transform_answer_to_float, transform_answer_to_int, transform_answer_to_list_item,
 };
 
-pub fn get_bmr(default_body_information: Option<BodyInformation>) -> f32 {
+pub fn get_bmr(default_body_information: Option<BodyInformation>) -> (f32, BodyInformation) {
     let height_question = requestty::Question::float("height")
         .message("Input your height(cm)")
         .validate(|num, _| {
@@ -53,13 +51,13 @@ pub fn get_bmr(default_body_information: Option<BodyInformation>) -> f32 {
     let age: u8 = transform_answer_to_int(requestty::prompt_one(age_question.build()));
 
     let body_information = BodyInformation::new(height, weight, age);
-    let bmr = calculate_bmr(body_information);
+    let bmr = calculate_bmr(&body_information);
 
-    bmr
+    (bmr, body_information)
 }
 
-pub fn get_daily_energy_expenditure(default_body_information: Option<BodyInformation>) -> f32 {
-    let bmr = get_bmr(default_body_information);
+pub fn get_daily_energy_expenditure(default_body_information: Option<BodyInformation>) -> (f32, BodyInformation) {
+    let (bmr, body_information) = get_bmr(default_body_information);
 
     let sport_ratio_question = requestty::Question::select("sport_ratio")
         .message("Which one is your daily sport strength?")
@@ -68,11 +66,11 @@ pub fn get_daily_energy_expenditure(default_body_information: Option<BodyInforma
         ])
         .build();
 
-    let sport_ratio_item: ListItem =
+    let sport_ratio_item: requestty::ListItem =
         transform_answer_to_list_item(requestty::prompt_one(sport_ratio_question));
 
     let sport_information = SportInformation::new(1.0 + (sport_ratio_item.index as f32) * 0.2);
     let daily_energy_expenditure = calculate_daily_energy_expenditure(bmr, sport_information);
 
-    daily_energy_expenditure
+    (daily_energy_expenditure, body_information)
 }

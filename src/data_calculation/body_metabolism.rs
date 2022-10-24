@@ -59,7 +59,7 @@ const AGE_BMR_RATIO: f32 = 6.8;
 /**
  * Calculate basalmetabolismrate according to body and sport information.
  */
-pub fn calculate_bmr(body_information: BodyInformation) -> f32 {
+pub fn calculate_bmr(body_information: &BodyInformation) -> f32 {
     let body_age: f32 = body_information.age.into();
 
     BASE_BMR
