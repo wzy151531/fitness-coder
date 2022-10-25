@@ -1,6 +1,6 @@
 [package]
 name = "fitness_coder"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "A fitness freak's toy."
 license = "MIT"
@@ -10,4 +10,3 @@ license = "MIT"
 [dependencies]
 lazy_static = "1.4.0"
 requestty = "0.4.1"
-serde_json = "1.0.87"

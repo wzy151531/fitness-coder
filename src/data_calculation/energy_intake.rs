@@ -22,7 +22,7 @@ impl fmt::Display for EnergyIntake {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "{}: {}{}, {}: {}{}, {}: {}{}",
+            "{}: {:.2}{}, {}: {:.2}{}, {}: {:.2}{}",
             translate("carbohydrate"),
             self.carbohydrate,
             translate("energy_intake_unit"),
@@ -52,7 +52,7 @@ impl fmt::Display for CarbonCycleEnergyIntake {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "\n==============================\n{}: {}\n==============================\n{}: {}\n==============================\n{}: {}\n==============================\n",
+            "\n============================================================\n{}: {}\n============================================================\n{}: {}\n============================================================\n{}: {}\n============================================================\n",
             translate("low_carbon_day"), self.low, translate("mid_carbon_day"), self.mid, translate("high_carbon_day"), self.high
         )
     }
