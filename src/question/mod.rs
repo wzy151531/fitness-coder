@@ -1,3 +1,4 @@
-pub mod body_metabolism;
-pub mod energy_intake;
+mod body_metabolism;
+mod energy_intake;
+pub mod menu;
 mod utils;

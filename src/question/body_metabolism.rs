@@ -1,5 +1,8 @@
-use crate::data_calculation::body_metabolism::{
-    calculate_bmr, calculate_daily_energy_expenditure, BodyInformation, SportInformation,
+use crate::{
+    data_calculation::body_metabolism::{
+        calculate_bmr, calculate_daily_energy_expenditure, BodyInformation, SportInformation,
+    },
+    i18n::translate,
 };
 
 use super::utils::{
@@ -8,32 +11,32 @@ use super::utils::{
 
 pub fn get_bmr(default_body_information: Option<BodyInformation>) -> (f32, BodyInformation) {
     let height_question = requestty::Question::float("height")
-        .message("Input your height(cm)")
+        .message(translate("body_metabolism_height_question"))
         .validate(|num, _| {
             if num.is_finite() && num > 0.0 && num < 300.0 {
                 Ok(())
             } else {
-                Err("Please enter a valid height".to_owned())
+                Err(translate("body_metabolism_height_question_error_message").to_owned())
             }
         });
 
     let weight_question = requestty::Question::float("weight")
-        .message("Input your weight(kg)")
+        .message(translate("body_metabolism_weight_question"))
         .validate(|num, _| {
             if num.is_finite() && num > 0.0 && num < 300.0 {
                 Ok(())
             } else {
-                Err("Please enter a valid weight".to_owned())
+                Err(translate("body_metabolism_weight_question_error_message").to_owned())
             }
         });
 
     let age_question = requestty::Question::int("age")
-        .message("Input your age(year)")
+        .message(translate("body_metabolism_age_question"))
         .validate(|num, _| {
             if num > 0 && num < 200 {
                 Ok(())
             } else {
-                Err("Please enter a valid age".to_owned())
+                Err(translate("body_metabolism_age_question_error_message").to_owned())
             }
         });
 
@@ -56,13 +59,20 @@ pub fn get_bmr(default_body_information: Option<BodyInformation>) -> (f32, BodyI
     (bmr, body_information)
 }
 
-pub fn get_daily_energy_expenditure(default_body_information: Option<BodyInformation>) -> (f32, BodyInformation) {
+pub fn get_daily_energy_expenditure(
+    default_body_information: Option<BodyInformation>,
+) -> (f32, BodyInformation) {
     let (bmr, body_information) = get_bmr(default_body_information);
 
     let sport_ratio_question = requestty::Question::select("sport_ratio")
-        .message("Which one is your daily sport strength?")
+        .message(translate("body_metabolism_sport_strength_question"))
         .choices(vec![
-            "Sedentray", "Very light", "Light", "Moderate", "High", "Extreme",
+            translate("body_metabolism_sport_strength_1"),
+            translate("body_metabolism_sport_strength_2"),
+            translate("body_metabolism_sport_strength_3"),
+            translate("body_metabolism_sport_strength_4"),
+            translate("body_metabolism_sport_strength_5"),
+            translate("body_metabolism_sport_strength_6"),
         ])
         .build();
 

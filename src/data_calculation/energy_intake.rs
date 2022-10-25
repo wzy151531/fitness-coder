@@ -1,5 +1,7 @@
 use std::fmt;
 
+use crate::i18n::translate;
+
 pub struct EnergyIntake {
     carbohydrate: f32,
     protein: f32,
@@ -20,8 +22,16 @@ impl fmt::Display for EnergyIntake {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "carbohydrate: {}g, protein: {}g, fat: {}g",
-            self.carbohydrate, self.protein, self.fat
+            "{}: {}{}, {}: {}{}, {}: {}{}",
+            translate("carbohydrate"),
+            self.carbohydrate,
+            translate("energy_intake_unit"),
+            translate("protein"),
+            self.protein,
+            translate("energy_intake_unit"),
+            translate("fat"),
+            self.fat,
+            translate("energy_intake_unit"),
         )
     }
 }
@@ -42,8 +52,8 @@ impl fmt::Display for CarbonCycleEnergyIntake {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "\n==============================\nlow carbon day: {}\n==============================\nmid carbon day: {}\n==============================\nhigh carbon day: {}\n==============================\n",
-            self.low, self.mid, self.high
+            "\n==============================\n{}: {}\n==============================\n{}: {}\n==============================\n{}: {}\n==============================\n",
+            translate("low_carbon_day"), self.low, translate("mid_carbon_day"), self.mid, translate("high_carbon_day"), self.high
         )
     }
 }

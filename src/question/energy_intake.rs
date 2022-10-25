@@ -1,5 +1,8 @@
-use crate::data_calculation::energy_intake::{
-    calculate_carbon_cycle_energy_intake, CarbonCycleEnergyIntake,
+use crate::{
+    data_calculation::energy_intake::{
+        calculate_carbon_cycle_energy_intake, CarbonCycleEnergyIntake,
+    },
+    i18n::translate,
 };
 
 use super::utils::{transform_answer_to_int, transform_answer_to_list_item};
@@ -9,15 +12,17 @@ pub fn get_carbon_cycle_energy_intake(
     weight: f32,
 ) -> CarbonCycleEnergyIntake {
     let body_fat_percentage_question = requestty::Question::select("body fat percentage")
-        .message("Which one is your current body fat percentage?")
+        .message(translate(
+            "energy_intake_body_fat_percentage_select_question",
+        ))
         .choices(vec![
-            "Clearly see your abdominals(10%)",
-            "Roughly see your abdominals with waist fat(15%)",
-            "Could not see your abdominals but could touch it(20%)",
-            "Lots of waist fat(25%)",
-            "Lots of chest fat(30%)",
-            "Lots of body fat(35%)",
-            "Customize",
+            translate("energy_intake_body_fat_percentage_1"),
+            translate("energy_intake_body_fat_percentage_2"),
+            translate("energy_intake_body_fat_percentage_3"),
+            translate("energy_intake_body_fat_percentage_4"),
+            translate("energy_intake_body_fat_percentage_5"),
+            translate("energy_intake_body_fat_percentage_6"),
+            translate("energy_intake_body_fat_percentage_7"),
         ])
         .build();
 
@@ -28,12 +33,17 @@ pub fn get_carbon_cycle_energy_intake(
     if body_fat_percentage_item.index == 6 {
         let customize_body_fat_percentage_question =
             requestty::Question::int("custom body fat percentage")
-                .message("Input your current body fat percentage(%)")
+                .message(translate(
+                    "energy_intake_body_fat_percentage_customize_question",
+                ))
                 .validate(|num, _| {
                     if num > 0 && num < 100 {
                         Ok(())
                     } else {
-                        Err("Please enter a valid body fat percentage".to_owned())
+                        Err(translate(
+                            "energy_intake_body_fat_percentage_customize_question_error_message",
+                        )
+                        .to_owned())
                     }
                 });
         let customize_body_fat_percentage: f32 = transform_answer_to_int(requestty::prompt_one(
